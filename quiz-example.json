@@ -1,0 +1,23 @@
+{
+  "id": "quiz-002",
+  "title": "Compose Multiplatform Basics",
+  "questions": [
+    {
+      "id": "question-001",
+      "text": "What is Compose Multiplatform?",
+      "answers": [
+        {"id": "answer-001", "text": "A declarative UI framework", "isCorrect": true},
+        {"id": "answer-002", "text": "A database ORM", "isCorrect": false},
+        {"id": "answer-003", "text": "A backend server framework", "isCorrect": false}
+      ]
+    },
+    {
+      "id": "question-002",
+      "text": "Which target supports Web assembly?",
+      "answers": [
+        {"id": "answer-004", "text": "wasmJs", "isCorrect": true},
+        {"id": "answer-005", "text": "jvm", "isCorrect": false}
+      ]
+    }
+  ]
+}

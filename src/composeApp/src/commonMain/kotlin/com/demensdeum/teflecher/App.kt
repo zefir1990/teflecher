@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-
+import kotlinx.coroutines.launch
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
 
@@ -60,76 +60,112 @@ val hardcodedQuizJson = """
 @Preview
 fun App() {
     MaterialTheme {
-        val quiz = remember { Json.decodeFromString<Quiz>(hardcodedQuizJson) }
+        var quiz by remember { mutableStateOf<Quiz?>(null) }
         var currentQuestionIndex by remember { mutableStateOf(0) }
         var selectedAnswer by remember { mutableStateOf<Answer?>(null) }
         var correctAnswersCount by remember { mutableStateOf(0) }
+        val coroutineScope = rememberCoroutineScope()
         
-        val currentQuestion = quiz.questions.getOrNull(currentQuestionIndex)
-
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .safeContentPadding()
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(text = quiz.title, style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            if (currentQuestion != null) {
-                Text(text = currentQuestion.text, style = MaterialTheme.typography.bodyLarge)
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                currentQuestion.answers.forEach { answer ->
-                    Button(
-                        onClick = {
-                            if (selectedAnswer == null) {
-                                selectedAnswer = answer
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        colors = if (selectedAnswer == answer) {
-                            if (answer.isCorrect) ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Green
-                            else ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336)) // Red
-                        } else {
-                            ButtonDefaults.buttonColors()
-                        }
-                    ) {
-                        Text(text = answer.text)
-                    }
-                }
-                
-                if (selectedAnswer != null) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = if (selectedAnswer!!.isCorrect) "Correct!" else "Incorrect!",
-                        color = if (selectedAnswer!!.isCorrect) Color(0xFF4CAF50) else Color(0xFFF44336),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = {
-                        if (selectedAnswer?.isCorrect == true) {
-                            correctAnswersCount++
-                        }
-                        currentQuestionIndex++
-                        selectedAnswer = null
-                    }) {
-                        Text("Next Question")
-                    }
-                }
-            } else {
-                Text("Quiz Completed!", style = MaterialTheme.typography.headlineMedium)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("You scored $correctAnswersCount out of ${quiz.questions.size}!", style = MaterialTheme.typography.bodyLarge)
+        if (quiz == null) {
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+            ) {
+                Text("Select Quiz JSON to Load", style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
-                    currentQuestionIndex = 0
-                    selectedAnswer = null
-                    correctAnswersCount = 0
+                    coroutineScope.launch {
+                        val jsonFileContent = loadQuizFile()
+                        if (jsonFileContent != null) {
+                            try {
+                                quiz = Json.decodeFromString<Quiz>(jsonFileContent)
+                                currentQuestionIndex = 0
+                                selectedAnswer = null
+                                correctAnswersCount = 0
+                            } catch (e: Exception) {
+                                println("Failed to decode JSON: ${e.message}")
+                            }
+                        } else {
+                            // Fallback if file picker is not implemented for the target
+                            quiz = Json.decodeFromString<Quiz>(hardcodedQuizJson)
+                            currentQuestionIndex = 0
+                            selectedAnswer = null
+                            correctAnswersCount = 0
+                        }
+                    }
                 }) {
-                    Text("Restart Quiz")
+                    Text("Load Quiz JSON")
+                }
+            }
+        } else {
+            val validQuiz = quiz!!
+            val currentQuestion = validQuiz.questions.getOrNull(currentQuestionIndex)
+    
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .safeContentPadding()
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(text = validQuiz.title, style = MaterialTheme.typography.headlineMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                if (currentQuestion != null) {
+                    Text(text = currentQuestion.text, style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    currentQuestion.answers.forEach { answer ->
+                        Button(
+                            onClick = {
+                                if (selectedAnswer == null) {
+                                    selectedAnswer = answer
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            colors = if (selectedAnswer == answer) {
+                                if (answer.isCorrect) ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Green
+                                else ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336)) // Red
+                            } else {
+                                ButtonDefaults.buttonColors()
+                            }
+                        ) {
+                            Text(text = answer.text)
+                        }
+                    }
+                    
+                    if (selectedAnswer != null) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = if (selectedAnswer!!.isCorrect) "Correct!" else "Incorrect!",
+                            color = if (selectedAnswer!!.isCorrect) Color(0xFF4CAF50) else Color(0xFFF44336),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = {
+                            if (selectedAnswer?.isCorrect == true) {
+                                correctAnswersCount++
+                            }
+                            currentQuestionIndex++
+                            selectedAnswer = null
+                        }) {
+                            Text("Next Question")
+                        }
+                    }
+                } else {
+                    Text("Quiz Completed!", style = MaterialTheme.typography.headlineMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("You scored $correctAnswersCount out of ${validQuiz.questions.size}!", style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = {
+                        quiz = null
+                    }) {
+                        Text("Restart Quiz")
+                    }
                 }
             }
         }
