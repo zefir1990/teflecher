@@ -63,6 +63,7 @@ fun App() {
         val quiz = remember { Json.decodeFromString<Quiz>(hardcodedQuizJson) }
         var currentQuestionIndex by remember { mutableStateOf(0) }
         var selectedAnswer by remember { mutableStateOf<Answer?>(null) }
+        var correctAnswersCount by remember { mutableStateOf(0) }
         
         val currentQuestion = quiz.questions.getOrNull(currentQuestionIndex)
 
@@ -109,6 +110,9 @@ fun App() {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = {
+                        if (selectedAnswer?.isCorrect == true) {
+                            correctAnswersCount++
+                        }
                         currentQuestionIndex++
                         selectedAnswer = null
                     }) {
@@ -118,9 +122,12 @@ fun App() {
             } else {
                 Text("Quiz Completed!", style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
+                Text("You scored $correctAnswersCount out of ${quiz.questions.size}!", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
                     currentQuestionIndex = 0
                     selectedAnswer = null
+                    correctAnswersCount = 0
                 }) {
                     Text("Restart Quiz")
                 }
