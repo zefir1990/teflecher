@@ -212,10 +212,12 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 if (currentQuestion != null) {
+                    val randomizedAnswers = remember(currentQuestion) { currentQuestion.answers.shuffled() }
+
                     Text(text = currentQuestion.text, style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    currentQuestion.answers.forEach { answer ->
+                    randomizedAnswers.forEach { answer ->
                         Button(
                             onClick = {
                                 if (selectedAnswer == null) {
