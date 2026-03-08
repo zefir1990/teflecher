@@ -31,6 +31,7 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
+import com.russhwolf.settings.Settings
 
 enum class Language {
     EN, RU
@@ -147,7 +148,16 @@ fun App() {
         var correctAnswersCount by remember { mutableStateOf(0) }
         var errorMessage by remember { mutableStateOf<String?>(null) }
         var wrongAnsweredQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
-        var selectedLanguage by remember { mutableStateOf(Language.EN) }
+        val settings = remember { Settings() }
+        var selectedLanguage by remember { 
+            val savedLang = settings.getString("selected_language", Language.EN.name)
+            mutableStateOf(try { Language.valueOf(savedLang) } catch (e: Exception) { Language.EN })
+        }
+        
+        LaunchedEffect(selectedLanguage) {
+            settings.putString("selected_language", selectedLanguage.name)
+        }
+
         var remoteQuizList by remember { mutableStateOf<List<QuizEntry>>(emptyList()) }
         var isLoadingRemote by remember { mutableStateOf(false) }
 

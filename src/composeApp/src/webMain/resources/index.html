@@ -9,11 +9,13 @@
     <link type="text/css" rel="stylesheet" href="styles.css">
     <script>
         // Polyfill to bypass strict MIME type checking for WebAssembly
-        // If the server returns application/octet-stream, instantiateStreaming fails.
-        // This overrides it to always fallback to arrayBuffer() parsing.
         if (typeof WebAssembly !== 'undefined' && WebAssembly.instantiate) {
             WebAssembly.instantiateStreaming = async function (source, obj) {
                 const response = await source;
+                if (!response.ok) {
+                    console.error("Failed to load WebAssembly file: ", response.url, "Status:", response.status);
+                    throw new Error("HTTP " + response.status + " fetching " + response.url + ". Did you forget to upload the new .wasm files?");
+                }
                 const buffer = await response.arrayBuffer();
                 return WebAssembly.instantiate(buffer, obj);
             };
