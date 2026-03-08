@@ -1,20 +1,20 @@
 {
-    "list" : [
+    "list": [
         {
-            "name" : "Russian History",
-            "address" : "http://demensdeum.com/software/teflecher/russian-history-quiz.json"
+            "name": "Russian History",
+            "address": "http://demensdeum.com/software/teflecher/russian-history-quiz.json"
         },
         {
-            "name" : "История России",
-            "address" : "http://demensdeum.com/software/teflecher/russian-history-quiz-ru.json"
+            "name": "История России",
+            "address": "http://demensdeum.com/software/teflecher/russian-history-quiz-ru.json"
         },
         {
-            "name" : "Metallica Quiz",
-            "address" : "http://demensdeum.com/software/teflecher/metallica-quiz.json"
+            "name": "Metallica Quiz",
+            "address": "http://demensdeum.com/software/teflecher/metallica-quiz.json"
         },
         {
-            "name" : "Metallica Квиз",
-            "address" : "http://demensdeum.com/software/teflecher/quiz-list.json/metallica-quiz-ru.json"
+            "name": "Metallica Квиз",
+            "address": "http://demensdeum.com/software/teflecher/metallica-quiz-ru.json"
         }
     ]
 }
