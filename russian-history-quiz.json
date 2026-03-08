@@ -1,0 +1,426 @@
+{
+    "id": "russian-history",
+    "title": "Russian History Quiz",
+    "questions": [
+        {
+            "id": "q1",
+            "text": "Who was the first Tsar of All Russia?",
+            "answers": [
+                {
+                    "id": "q1-a1",
+                    "text": "Ivan IV (Ivan the Terrible)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q1-a2",
+                    "text": "Peter the Great",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q1-a3",
+                    "text": "Nicholas II",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q2",
+            "text": "What was the name of the last ruling dynasty of the Russian Empire?",
+            "answers": [
+                {
+                    "id": "q2-a1",
+                    "text": "The Romanov dynasty",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q2-a2",
+                    "text": "The Rurik dynasty",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q2-a3",
+                    "text": "The Habsburg dynasty",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q3",
+            "text": "Which city was the capital of the Russian Empire from 1712 to 1918?",
+            "answers": [
+                {
+                    "id": "q3-a1",
+                    "text": "St. Petersburg",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q3-a2",
+                    "text": "Moscow",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q3-a3",
+                    "text": "Kiev",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q4",
+            "text": "Who was the leader of the Bolsheviks during the 1917 October Revolution?",
+            "answers": [
+                {
+                    "id": "q4-a1",
+                    "text": "Vladimir Lenin",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q4-a2",
+                    "text": "Joseph Stalin",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q4-a3",
+                    "text": "Leon Trotsky",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q5",
+            "text": "What major event in 1861 fundamentally changed Russian society?",
+            "answers": [
+                {
+                    "id": "q5-a1",
+                    "text": "The Emancipation of the Serfs",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q5-a2",
+                    "text": "The October Revolution",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q5-a3",
+                    "text": "The founding of St. Petersburg",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q6",
+            "text": "Which Russian ruler is known for westernizing the country and founding the Russian Navy?",
+            "answers": [
+                {
+                    "id": "q6-a1",
+                    "text": "Peter the Great (Peter I)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q6-a2",
+                    "text": "Ivan the Terrible",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q6-a3",
+                    "text": "Catherine the Great",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q7",
+            "text": "What was the name of the Soviet Union's first artificial Earth satellite, launched in 1957?",
+            "answers": [
+                {
+                    "id": "q7-a1",
+                    "text": "Sputnik 1",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q7-a2",
+                    "text": "Vostok 1",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q7-a3",
+                    "text": "Soyuz 1",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q8",
+            "text": "Who was the last Tsar of the Russian Empire?",
+            "answers": [
+                {
+                    "id": "q8-a1",
+                    "text": "Nicholas II",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q8-a2",
+                    "text": "Alexander III",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q8-a3",
+                    "text": "Peter III",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q9",
+            "text": "Which famous battle in 1942-1943 is considered a turning point in World War II on the Eastern Front?",
+            "answers": [
+                {
+                    "id": "q9-a1",
+                    "text": "The Battle of Stalingrad",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q9-a2",
+                    "text": "The Battle of Kursk",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q9-a3",
+                    "text": "The Battle of Moscow",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q10",
+            "text": "Who was the Empress of Russia from 1762 to 1796, known for expanding the empire and leading the Russian Enlightenment?",
+            "answers": [
+                {
+                    "id": "q10-a1",
+                    "text": "Catherine the Great (Catherine II)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q10-a2",
+                    "text": "Elizabeth of Russia",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q10-a3",
+                    "text": "Anna of Russia",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q11",
+            "text": "What was the name of the period of political repression and mass killings in the Soviet Union led by Joseph Stalin in the late 1930s?",
+            "answers": [
+                {
+                    "id": "q11-a1",
+                    "text": "The Great Purge (or Great Terror)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q11-a2",
+                    "text": "The Red Terror",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q11-a3",
+                    "text": "The Time of Troubles",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q12",
+            "text": "Which Russian city was famously besieged by Nazi forces for 872 days during World War II?",
+            "answers": [
+                {
+                    "id": "q12-a1",
+                    "text": "Leningrad (now St. Petersburg)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q12-a2",
+                    "text": "Moscow",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q12-a3",
+                    "text": "Stalingrad (now Volgograd)",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q13",
+            "text": "Who was the first human to journey into outer space?",
+            "answers": [
+                {
+                    "id": "q13-a1",
+                    "text": "Yuri Gagarin",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q13-a2",
+                    "text": "Neil Armstrong",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q13-a3",
+                    "text": "Alexey Leonov",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q14",
+            "text": "What name is given to the period of political and economic crisis in Russia following the death of the last Rurikid Tsar, Fyodor I, until the establishment of the Romanov dynasty?",
+            "answers": [
+                {
+                    "id": "q14-a1",
+                    "text": "The Time of Troubles",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q14-a2",
+                    "text": "The Great Northern War",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q14-a3",
+                    "text": "The Pugachev Rebellion",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q15",
+            "text": "Which Soviet leader initiated the policies of Glasnost (openness) and Perestroika (restructuring) in the 1980s?",
+            "answers": [
+                {
+                    "id": "q15-a1",
+                    "text": "Mikhail Gorbachev",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q15-a2",
+                    "text": "Leonid Brezhnev",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q15-a3",
+                    "text": "Nikita Khrushchev",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q16",
+            "text": "In what year did the Soviet Union officially dissolve?",
+            "answers": [
+                {
+                    "id": "q16-a1",
+                    "text": "1991",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q16-a2",
+                    "text": "1989",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q16-a3",
+                    "text": "1993",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q17",
+            "text": "Who wrote the influential novel \"War and Peace,\" set against the backdrop of the French invasion of Russia?",
+            "answers": [
+                {
+                    "id": "q17-a1",
+                    "text": "Leo Tolstoy",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q17-a2",
+                    "text": "Fyodor Dostoevsky",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q17-a3",
+                    "text": "Anton Chekhov",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q18",
+            "text": "What was the name of the secret police under Ivan the Terrible?",
+            "answers": [
+                {
+                    "id": "q18-a1",
+                    "text": "The Oprichnina",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q18-a2",
+                    "text": "The KGB",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q18-a3",
+                    "text": "The Cheka",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q19",
+            "text": "Which conflict, fought from 1904 to 1905, ended in a surprising defeat for the Russian Empire?",
+            "answers": [
+                {
+                    "id": "q19-a1",
+                    "text": "The Russo-Japanese War",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q19-a2",
+                    "text": "The Crimean War",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q19-a3",
+                    "text": "World War I",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "q20",
+            "text": "What medieval state is considered the cultural ancestor of modern Russia, Belarus, and Ukraine?",
+            "answers": [
+                {
+                    "id": "q20-a1",
+                    "text": "Kievan Rus'",
+                    "isCorrect": true
+                },
+                {
+                    "id": "q20-a2",
+                    "text": "The Golden Horde",
+                    "isCorrect": false
+                },
+                {
+                    "id": "q20-a3",
+                    "text": "The Grand Duchy of Moscow",
+                    "isCorrect": false
+                }
+            ]
+        }
+    ]
+}

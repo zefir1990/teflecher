@@ -1,0 +1,636 @@
+{
+    "id": "metallica-quiz",
+    "title": "Metallica Quiz",
+    "questions": [
+        {
+            "id": "m1",
+            "text": "What year was Metallica formed?",
+            "answers": [
+                {
+                    "id": "m1-a1",
+                    "text": "1981",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m1-a2",
+                    "text": "1983",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m1-a3",
+                    "text": "1979",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m2",
+            "text": "Who are the two founding members of Metallica?",
+            "answers": [
+                {
+                    "id": "m2-a1",
+                    "text": "James Hetfield and Lars Ulrich",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m2-a2",
+                    "text": "Dave Mustaine and Cliff Burton",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m2-a3",
+                    "text": "Kirk Hammett and Robert Trujillo",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m3",
+            "text": "What is the title of Metallica's debut studio album?",
+            "answers": [
+                {
+                    "id": "m3-a1",
+                    "text": "Kill 'Em All",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m3-a2",
+                    "text": "Ride the Lightning",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m3-a3",
+                    "text": "Master of Puppets",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m4",
+            "text": "In what year was \"Kill 'Em All\" released?",
+            "answers": [
+                {
+                    "id": "m4-a1",
+                    "text": "1983",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m4-a2",
+                    "text": "1981",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m4-a3",
+                    "text": "1984",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m5",
+            "text": "Who was Metallica's original lead guitarist before being fired and replaced by Kirk Hammett?",
+            "answers": [
+                {
+                    "id": "m5-a1",
+                    "text": "Dave Mustaine",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m5-a2",
+                    "text": "Ron McGovney",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m5-a3",
+                    "text": "Jason Newsted",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m6",
+            "text": "Which bass player tragically died in a bus crash in Sweden in 1986?",
+            "answers": [
+                {
+                    "id": "m6-a1",
+                    "text": "Cliff Burton",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m6-a2",
+                    "text": "Jason Newsted",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m6-a3",
+                    "text": "Ron McGovney",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m7",
+            "text": "What album did Metallica release shortly before Cliff Burton's death?",
+            "answers": [
+                {
+                    "id": "m7-a1",
+                    "text": "Master of Puppets",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m7-a2",
+                    "text": "Ride the Lightning",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m7-a3",
+                    "text": "...And Justice for All",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m8",
+            "text": "Who replaced Cliff Burton on bass?",
+            "answers": [
+                {
+                    "id": "m8-a1",
+                    "text": "Jason Newsted",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m8-a2",
+                    "text": "Robert Trujillo",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m8-a3",
+                    "text": "Les Claypool",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m9",
+            "text": "What was the first music video Metallica ever made?",
+            "answers": [
+                {
+                    "id": "m9-a1",
+                    "text": "One",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m9-a2",
+                    "text": "Enter Sandman",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m9-a3",
+                    "text": "Fade to Black",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m10",
+            "text": "Which album is widely referred to as \"The Black Album\"?",
+            "answers": [
+                {
+                    "id": "m10-a1",
+                    "text": "Metallica (1991)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m10-a2",
+                    "text": "Load",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m10-a3",
+                    "text": "St. Anger",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m11",
+            "text": "What is the name of the documentary film that chronicles the troubled recording of the album \"St. Anger\"?",
+            "answers": [
+                {
+                    "id": "m11-a1",
+                    "text": "Some Kind of Monster",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m11-a2",
+                    "text": "Through the Never",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m11-a3",
+                    "text": "A Year and a Half in the Life of Metallica",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m12",
+            "text": "Who plays lead guitar for Metallica?",
+            "answers": [
+                {
+                    "id": "m12-a1",
+                    "text": "Kirk Hammett",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m12-a2",
+                    "text": "James Hetfield",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m12-a3",
+                    "text": "Dave Mustaine",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m13",
+            "text": "Which Metallica album features the song \"Enter Sandman\"?",
+            "answers": [
+                {
+                    "id": "m13-a1",
+                    "text": "Metallica (The Black Album)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m13-a2",
+                    "text": "Master of Puppets",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m13-a3",
+                    "text": "Ride the Lightning",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m14",
+            "text": "What producer worked with Metallica on \"The Black Album\", \"Load\", \"Reload\", and \"St. Anger\"?",
+            "answers": [
+                {
+                    "id": "m14-a1",
+                    "text": "Bob Rock",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m14-a2",
+                    "text": "Rick Rubin",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m14-a3",
+                    "text": "Flemming Rasmussen",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m15",
+            "text": "In what city was Metallica formed?",
+            "answers": [
+                {
+                    "id": "m15-a1",
+                    "text": "Los Angeles, California",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m15-a2",
+                    "text": "San Francisco, California",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m15-a3",
+                    "text": "New York, New York",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m16",
+            "text": "Which bass player joined Metallica in 2003, replacing Jason Newsted?",
+            "answers": [
+                {
+                    "id": "m16-a1",
+                    "text": "Robert Trujillo",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m16-a2",
+                    "text": "Cliff Burton",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m16-a3",
+                    "text": "David Ellefson",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m17",
+            "text": "What Metallica song features the lyrics \"Exit light, enter night\"?",
+            "answers": [
+                {
+                    "id": "m17-a1",
+                    "text": "Enter Sandman",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m17-a2",
+                    "text": "Nothing Else Matters",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m17-a3",
+                    "text": "Sad But True",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m18",
+            "text": "What was the name of the collaborative album Metallica released with Lou Reed in 2011?",
+            "answers": [
+                {
+                    "id": "m18-a1",
+                    "text": "Lulu",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m18-a2",
+                    "text": "Death Magnetic",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m18-a3",
+                    "text": "Hardwired... to Self-Destruct",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m19",
+            "text": "Which album features the tracks \"Battery\", \"Master of Puppets\", and \"Damage, Inc.\"?",
+            "answers": [
+                {
+                    "id": "m19-a1",
+                    "text": "Master of Puppets",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m19-a2",
+                    "text": "Ride the Lightning",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m19-a3",
+                    "text": "...And Justice for All",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m20",
+            "text": "The song \"For Whom the Bell Tolls\" is inspired by a novel written by which author?",
+            "answers": [
+                {
+                    "id": "m20-a1",
+                    "text": "Ernest Hemingway",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m20-a2",
+                    "text": "Stephen King",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m20-a3",
+                    "text": "J.R.R. Tolkien",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m21",
+            "text": "What is the name of Metallica's 1999 live album recorded with the San Francisco Symphony?",
+            "answers": [
+                {
+                    "id": "m21-a1",
+                    "text": "S&M",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m21-a2",
+                    "text": "Live Shit: Binge & Purge",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m21-a3",
+                    "text": "Through the Never",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m22",
+            "text": "What song won Metallica their first Grammy Award in 1990 for Best Metal Performance?",
+            "answers": [
+                {
+                    "id": "m22-a1",
+                    "text": "One",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m22-a2",
+                    "text": "Enter Sandman",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m22-a3",
+                    "text": "Master of Puppets",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m23",
+            "text": "Which album marked a departure from their thrash metal roots toward a more alternative and hard rock sound in the mid-90s?",
+            "answers": [
+                {
+                    "id": "m23-a1",
+                    "text": "Load",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m23-a2",
+                    "text": "St. Anger",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m23-a3",
+                    "text": "...And Justice for All",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m24",
+            "text": "What Metallica song is instrumental and named after a constellation?",
+            "answers": [
+                {
+                    "id": "m24-a1",
+                    "text": "Orion",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m24-a2",
+                    "text": "The Call of Ktulu",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m24-a3",
+                    "text": "To Live Is to Die",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m25",
+            "text": "Who created the controversial artwork for the \"Load\" and \"Reload\" albums?",
+            "answers": [
+                {
+                    "id": "m25-a1",
+                    "text": "Andres Serrano",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m25-a2",
+                    "text": "Pushead",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m25-a3",
+                    "text": "H.R. Giger",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m26",
+            "text": "What was the name of the massive stadium tour Metallica co-headlined with another major hard rock band in 1992?",
+            "answers": [
+                {
+                    "id": "m26-a1",
+                    "text": "The Guns N' Roses/Metallica Stadium Tour",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m26-a2",
+                    "text": "Monsters of Rock",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m26-a3",
+                    "text": "The Big 4 Tour",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m27",
+            "text": "The ballad \"Fade to Black\" appears on which album?",
+            "answers": [
+                {
+                    "id": "m27-a1",
+                    "text": "Ride the Lightning",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m27-a2",
+                    "text": "Master of Puppets",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m27-a3",
+                    "text": "Metallica (The Black Album)",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m28",
+            "text": "What famous classical composition is traditionally used as the intro tape for Metallica's live shows?",
+            "answers": [
+                {
+                    "id": "m28-a1",
+                    "text": "The Ecstasy of Gold (by Ennio Morricone)",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m28-a2",
+                    "text": "O Fortuna (by Carl Orff)",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m28-a3",
+                    "text": "Ride of the Valkyries (by Richard Wagner)",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m29",
+            "text": "Which Metallica song features the lyrics \"Liberty or death, what we so proudly hail\"?",
+            "answers": [
+                {
+                    "id": "m29-a1",
+                    "text": "Don't Tread on Me",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m29-a2",
+                    "text": "Of Wolf and Man",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m29-a3",
+                    "text": "Through the Never",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "id": "m30",
+            "text": "In 2013, Metallica performed a concert in Antarctica, making them the first band to do what?",
+            "answers": [
+                {
+                    "id": "m30-a1",
+                    "text": "Perform a concert on all seven continents",
+                    "isCorrect": true
+                },
+                {
+                    "id": "m30-a2",
+                    "text": "Play a concert in sub-zero temperatures without instruments",
+                    "isCorrect": false
+                },
+                {
+                    "id": "m30-a3",
+                    "text": "Broadcast a live show directly to space",
+                    "isCorrect": false
+                }
+            ]
+        }
+    ]
+}
