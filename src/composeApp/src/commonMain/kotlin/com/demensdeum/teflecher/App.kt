@@ -21,6 +21,54 @@ import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
+
+enum class Language {
+    EN, RU
+}
+
+data class AppStrings(
+    val selectQuizJson: String,
+    val loadQuizJson: String,
+    val invalidFormat: String,
+    val correct: String,
+    val incorrect: String,
+    val nextQuestion: String,
+    val quizCompleted: String,
+    val youScored: (Int, Int) -> String,
+    val restartQuiz: String,
+    val retryMistakes: String,
+    val retryWrongAnswersButton: String
+)
+
+val enStrings = AppStrings(
+    selectQuizJson = "Select Quiz JSON to Load",
+    loadQuizJson = "Load Quiz JSON",
+    invalidFormat = "Invalid Quiz format:",
+    correct = "Correct!",
+    incorrect = "Incorrect!",
+    nextQuestion = "Next Question",
+    quizCompleted = "Quiz Completed!",
+    youScored = { score, total -> "You scored $score out of $total!" },
+    restartQuiz = "Restart Quiz",
+    retryMistakes = "(Retry Mistakes)",
+    retryWrongAnswersButton = "Retry Wrong Answers"
+)
+
+val ruStrings = AppStrings(
+    selectQuizJson = "Выберите JSON файл для загрузки",
+    loadQuizJson = "Загрузить Викторину JSON",
+    invalidFormat = "Неверный формат викторины:",
+    correct = "Правильно!",
+    incorrect = "Неправильно!",
+    nextQuestion = "Следующий Вопрос",
+    quizCompleted = "Викторина Завершена!",
+    youScored = { score, total -> "Вы набрали $score из $total!" },
+    restartQuiz = "Начать Заново",
+    retryMistakes = "(Работа над ошибками)",
+    retryWrongAnswersButton = "Пройти Ошибки"
+)
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
 
@@ -66,6 +114,8 @@ fun App() {
         var correctAnswersCount by remember { mutableStateOf(0) }
         var errorMessage by remember { mutableStateOf<String?>(null) }
         var wrongAnsweredQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
+        var selectedLanguage by remember { mutableStateOf(Language.EN) }
+        val strings = if (selectedLanguage == Language.EN) enStrings else ruStrings
         val coroutineScope = rememberCoroutineScope()
         
         if (quiz == null) {
@@ -76,7 +126,23 @@ fun App() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
             ) {
-                Text("Select Quiz JSON to Load", style = MaterialTheme.typography.headlineMedium)
+                Row {
+                    Button(
+                        onClick = { selectedLanguage = Language.EN },
+                        colors = if (selectedLanguage == Language.EN) ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer) else ButtonDefaults.buttonColors()
+                    ) {
+                        Text("English", color = if (selectedLanguage == Language.EN) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimary)
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(
+                        onClick = { selectedLanguage = Language.RU },
+                        colors = if (selectedLanguage == Language.RU) ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer) else ButtonDefaults.buttonColors()
+                    ) {
+                        Text("Русский", color = if (selectedLanguage == Language.RU) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimary)
+                    }
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+                Text(strings.selectQuizJson, style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
                     coroutineScope.launch {
@@ -106,7 +172,7 @@ fun App() {
                                 wrongAnsweredQuestions = emptyList()
                             } catch (e: Exception) {
                                 println("Failed to decode or validate JSON: ${e.message}")
-                                errorMessage = "Invalid Quiz format: ${e.message}"
+                                errorMessage = "${strings.invalidFormat} ${e.message}"
                             }
                         } else {
                             // Fallback if file picker is not implemented for the target
@@ -118,7 +184,7 @@ fun App() {
                         }
                     }
                 }) {
-                    Text("Load Quiz JSON")
+                    Text(strings.loadQuizJson)
                 }
                 
                 if (errorMessage != null) {
@@ -171,7 +237,7 @@ fun App() {
                     if (selectedAnswer != null) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = if (selectedAnswer!!.isCorrect) "Correct!" else "Incorrect!",
+                            text = if (selectedAnswer!!.isCorrect) strings.correct else strings.incorrect,
                             color = if (selectedAnswer!!.isCorrect) Color(0xFF4CAF50) else Color(0xFFF44336),
                             style = MaterialTheme.typography.titleMedium
                         )
@@ -187,25 +253,25 @@ fun App() {
                             currentQuestionIndex++
                             selectedAnswer = null
                         }) {
-                            Text("Next Question")
+                            Text(strings.nextQuestion)
                         }
                     }
                 } else {
-                    Text("Quiz Completed!", style = MaterialTheme.typography.headlineMedium)
+                    Text(strings.quizCompleted, style = MaterialTheme.typography.headlineMedium)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("You scored $correctAnswersCount out of ${validQuiz.questions.size}!", style = MaterialTheme.typography.bodyLarge)
+                    Text(strings.youScored(correctAnswersCount, validQuiz.questions.size), style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = {
                         quiz = null
                     }) {
-                        Text("Restart Quiz")
+                        Text(strings.restartQuiz)
                     }
                     if (wrongAnsweredQuestions.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = {
                             val retryQuiz = Quiz(
                                 id = validQuiz.id + "-retry",
-                                title = validQuiz.title + " (Retry Mistakes)",
+                                title = validQuiz.title + " ${strings.retryMistakes}",
                                 questions = wrongAnsweredQuestions
                             )
                             quiz = retryQuiz
@@ -214,7 +280,7 @@ fun App() {
                             selectedAnswer = null
                             wrongAnsweredQuestions = emptyList()
                         }) {
-                            Text("Retry Wrong Answers")
+                            Text(strings.retryWrongAnswersButton)
                         }
                     }
                 }
