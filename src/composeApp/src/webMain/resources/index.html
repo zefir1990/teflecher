@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="https://demensdeum.com/software/teflecher/">
     <title>Teflecher</title>
     <link type="text/css" rel="stylesheet" href="styles.css">
+    <script>
+        // Polyfill to bypass strict MIME type checking for WebAssembly
+        // If the server returns application/octet-stream, instantiateStreaming fails.
+        // This overrides it to always fallback to arrayBuffer() parsing.
+        if (typeof WebAssembly !== 'undefined' && WebAssembly.instantiate) {
+            WebAssembly.instantiateStreaming = async function (source, obj) {
+                const response = await source;
+                const buffer = await response.arrayBuffer();
+                return WebAssembly.instantiate(buffer, obj);
+            };
+        }
+    </script>
 </head>
+
 <body style="text-align: center; align-content: center">
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" role="presentation">
-    <circle cx="25" cy="25" r="20" stroke="#ccc" stroke-width="4" fill="none"/>
-    <circle cx="25" cy="25" r="20" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" role="presentation">
+        <circle cx="25" cy="25" r="20" stroke="#ccc" stroke-width="4" fill="none" />
+        <circle cx="25" cy="25" r="20" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"
             stroke-dasharray="90 125">
-        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
-                          repeatCount="indefinite"/>
-    </circle>
-</svg>
-<script type="application/javascript" src="composeApp.js"></script>
+            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
+                repeatCount="indefinite" />
+        </circle>
+    </svg>
+    <script type="application/javascript" src="composeApp.js"></script>
 </body>
+
 </html>

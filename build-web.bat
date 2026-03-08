@@ -21,16 +21,6 @@ echo Opening browser...
 start http://localhost:8000
 
 echo Starting local web server with proper WASM MIME type...
-echo import http.server > serve.py
-echo import socketserver >> serve.py
-echo PORT = 8000 >> serve.py
-echo class Handler(http.server.SimpleHTTPRequestHandler): >> serve.py
-echo     extensions_map = http.server.SimpleHTTPRequestHandler.extensions_map.copy() >> serve.py
-echo     extensions_map['.wasm'] = 'application/wasm' >> serve.py
-echo with socketserver.TCPServer(("", PORT), Handler) as httpd: >> serve.py
-echo     print("Serving at port", PORT) >> serve.py
-echo     httpd.serve_forever() >> serve.py
-
-python serve.py
+python "%~dp0serve.py"
 
 pause
