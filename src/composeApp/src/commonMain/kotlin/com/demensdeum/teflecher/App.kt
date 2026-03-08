@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +44,8 @@ data class AppStrings(
     val youScored: (Int, Int) -> String,
     val restartQuiz: String,
     val retryMistakes: String,
-    val retryWrongAnswersButton: String
+    val retryWrongAnswersButton: String,
+    val questionCount: (Int, Int) -> String
 )
 
 val enStrings = AppStrings(
@@ -57,7 +59,8 @@ val enStrings = AppStrings(
     youScored = { score, total -> "You scored $score out of $total!" },
     restartQuiz = "Restart Quiz",
     retryMistakes = "(Retry Mistakes)",
-    retryWrongAnswersButton = "Retry Wrong Answers"
+    retryWrongAnswersButton = "Retry Wrong Answers",
+    questionCount = { current, total -> "Question $current of $total" }
 )
 
 val ruStrings = AppStrings(
@@ -71,7 +74,8 @@ val ruStrings = AppStrings(
     youScored = { score, total -> "Вы набрали $score из $total!" },
     restartQuiz = "Начать Заново",
     retryMistakes = "(Работа над ошибками)",
-    retryWrongAnswersButton = "Пройти Ошибки"
+    retryWrongAnswersButton = "Пройти Ошибки",
+    questionCount = { current, total -> "Вопрос $current из $total" }
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -216,6 +220,17 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 if (currentQuestion != null) {
+                    val progress = (currentQuestionIndex + 1).toFloat() / validQuiz.questions.size
+                    LinearProgressIndicator(
+                        progress = progress,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    )
+                    Text(
+                        text = strings.questionCount(currentQuestionIndex + 1, validQuiz.questions.size),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
                     val randomizedAnswers = remember(currentQuestion) { currentQuestion.answers.shuffled() }
 
                     Text(text = currentQuestion.text, style = MaterialTheme.typography.bodyLarge)
