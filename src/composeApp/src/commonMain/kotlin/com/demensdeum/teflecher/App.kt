@@ -65,6 +65,7 @@ fun App() {
         var selectedAnswer by remember { mutableStateOf<Answer?>(null) }
         var correctAnswersCount by remember { mutableStateOf(0) }
         var errorMessage by remember { mutableStateOf<String?>(null) }
+        var wrongAnsweredQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
         val coroutineScope = rememberCoroutineScope()
         
         if (quiz == null) {
@@ -102,6 +103,7 @@ fun App() {
                                 currentQuestionIndex = 0
                                 selectedAnswer = null
                                 correctAnswersCount = 0
+                                wrongAnsweredQuestions = emptyList()
                             } catch (e: Exception) {
                                 println("Failed to decode or validate JSON: ${e.message}")
                                 errorMessage = "Invalid Quiz format: ${e.message}"
@@ -112,6 +114,7 @@ fun App() {
                             currentQuestionIndex = 0
                             selectedAnswer = null
                             correctAnswersCount = 0
+                            wrongAnsweredQuestions = emptyList()
                         }
                     }
                 }) {
@@ -176,6 +179,10 @@ fun App() {
                         Button(onClick = {
                             if (selectedAnswer?.isCorrect == true) {
                                 correctAnswersCount++
+                            } else {
+                                currentQuestion?.let {
+                                    wrongAnsweredQuestions = wrongAnsweredQuestions + it
+                                }
                             }
                             currentQuestionIndex++
                             selectedAnswer = null
@@ -192,6 +199,23 @@ fun App() {
                         quiz = null
                     }) {
                         Text("Restart Quiz")
+                    }
+                    if (wrongAnsweredQuestions.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = {
+                            val retryQuiz = Quiz(
+                                id = validQuiz.id + "-retry",
+                                title = validQuiz.title + " (Retry Mistakes)",
+                                questions = wrongAnsweredQuestions
+                            )
+                            quiz = retryQuiz
+                            currentQuestionIndex = 0
+                            correctAnswersCount = 0
+                            selectedAnswer = null
+                            wrongAnsweredQuestions = emptyList()
+                        }) {
+                            Text("Retry Wrong Answers")
+                        }
                     }
                 }
             }
