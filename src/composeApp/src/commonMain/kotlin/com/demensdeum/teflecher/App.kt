@@ -26,8 +26,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerType
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.width
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 
 enum class Language {
     EN, RU
@@ -45,7 +48,9 @@ data class AppStrings(
     val restartQuiz: String,
     val retryMistakes: String,
     val retryWrongAnswersButton: String,
-    val questionCount: (Int, Int) -> String
+    val questionCount: (Int, Int) -> String,
+    val loadingRemoteQuizzes: String,
+    val orSelectRemoteQuiz: String
 )
 
 val enStrings = AppStrings(
@@ -60,7 +65,9 @@ val enStrings = AppStrings(
     restartQuiz = "Restart Quiz",
     retryMistakes = "(Retry Mistakes)",
     retryWrongAnswersButton = "Retry Wrong Answers",
-    questionCount = { current, total -> "Question $current of $total" }
+    questionCount = { current, total -> "Question $current of $total" },
+    loadingRemoteQuizzes = "Loading remote quizzes...",
+    orSelectRemoteQuiz = "Or select a remote quiz:"
 )
 
 val ruStrings = AppStrings(
@@ -75,7 +82,9 @@ val ruStrings = AppStrings(
     restartQuiz = "Начать Заново",
     retryMistakes = "(Работа над ошибками)",
     retryWrongAnswersButton = "Пройти Ошибки",
-    questionCount = { current, total -> "Вопрос $current из $total" }
+    questionCount = { current, total -> "Вопрос $current из $total" },
+    loadingRemoteQuizzes = "Загрузка списка викторин...",
+    orSelectRemoteQuiz = "Или выберите онлайн викторину:"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -85,6 +94,12 @@ data class Question(val id: String, val text: String, val answers: List<Answer>)
 
 @Serializable
 data class Quiz(val id: String, val title: String, val questions: List<Question>)
+
+@Serializable
+data class QuizEntry(val name: String, val address: String)
+
+@Serializable
+data class RemoteQuizList(val list: List<QuizEntry>)
 
 val hardcodedQuizJson = """
 {
@@ -115,6 +130,16 @@ val hardcodedQuizJson = """
 @Composable
 @Preview
 fun App() {
+    val client = remember {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+        }
+    }
+
     MaterialTheme {
         var quiz by remember { mutableStateOf<Quiz?>(null) }
         var currentQuestionIndex by remember { mutableStateOf(0) }
@@ -123,8 +148,23 @@ fun App() {
         var errorMessage by remember { mutableStateOf<String?>(null) }
         var wrongAnsweredQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
         var selectedLanguage by remember { mutableStateOf(Language.EN) }
+        var remoteQuizList by remember { mutableStateOf<List<QuizEntry>>(emptyList()) }
+        var isLoadingRemote by remember { mutableStateOf(false) }
+
         val strings = if (selectedLanguage == Language.EN) enStrings else ruStrings
         val coroutineScope = rememberCoroutineScope()
+
+        LaunchedEffect(Unit) {
+            isLoadingRemote = true
+            try {
+                val remoteList: RemoteQuizList = client.get("https://demensdeum.com/software/teflecher/quiz-list.json").body()
+                remoteQuizList = remoteList.list
+            } catch (e: Exception) {
+                println("Failed to fetch remote quiz list: ${e.message}")
+            } finally {
+                isLoadingRemote = false
+            }
+        }
 
         val launcher = rememberFilePickerLauncher(
             type = PickerType.File(extensions = listOf("json"))
@@ -202,6 +242,47 @@ fun App() {
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyLarge
                     )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+                
+                if (isLoadingRemote) {
+                    Text(strings.loadingRemoteQuizzes)
+                } else if (remoteQuizList.isNotEmpty()) {
+                    Text(strings.orSelectRemoteQuiz, style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    remoteQuizList.forEach { entry ->
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    isLoadingRemote = true
+                                    errorMessage = null
+                                    try {
+                                        val quizUrl = entry.address.replace("http://", "https://") // Secure connection
+                                        val loadedQuiz: Quiz = client.get(quizUrl).body()
+                                        
+                                        if (loadedQuiz.questions.isEmpty()) {
+                                            throw Exception("Quiz contains no questions.")
+                                        }
+                                        
+                                        quiz = loadedQuiz
+                                        currentQuestionIndex = 0
+                                        selectedAnswer = null
+                                        correctAnswersCount = 0
+                                        wrongAnsweredQuestions = emptyList()
+                                    } catch (e: Exception) {
+                                        println("Failed to download remote quiz: ${e.message}")
+                                        errorMessage = "Failed to download quiz: ${e.message}"
+                                    } finally {
+                                        isLoadingRemote = false
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(0.8f).padding(vertical = 4.dp)
+                        ) {
+                            Text(entry.name)
+                        }
+                    }
                 }
             }
         } else {

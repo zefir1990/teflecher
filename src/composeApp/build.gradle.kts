@@ -45,6 +45,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -58,6 +59,9 @@ kotlin {
             implementation(projects.shared)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.filekit.compose)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -65,6 +69,27 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.okhttp)
+        }
+        val iosMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        val jsMain by getting {
+            kotlin.srcDirs("src/webMain/kotlin")
+            resources.srcDirs("src/webMain/resources")
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
+        val wasmJsMain by getting {
+            kotlin.srcDirs("src/webMain/kotlin")
+            resources.srcDirs("src/webMain/resources")
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
         }
     }
 }
