@@ -23,6 +23,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
+import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
+import io.github.vinceglb.filekit.core.PickerType
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
 
 enum class Language {
     EN, RU
@@ -117,6 +121,42 @@ fun App() {
         var selectedLanguage by remember { mutableStateOf(Language.EN) }
         val strings = if (selectedLanguage == Language.EN) enStrings else ruStrings
         val coroutineScope = rememberCoroutineScope()
+
+        val launcher = rememberFilePickerLauncher(
+            type = PickerType.File(extensions = listOf("json"))
+        ) { file ->
+            if (file != null) {
+                coroutineScope.launch {
+                    try {
+                        val bytes = file.readBytes()
+                        val jsonFileContent = bytes.decodeToString()
+                        val loadedQuiz = Json.decodeFromString<Quiz>(jsonFileContent)
+
+                        if (loadedQuiz.questions.isEmpty()) {
+                            throw Exception("Quiz contains no questions.")
+                        }
+                        loadedQuiz.questions.forEach { question ->
+                            if (question.answers.size < 2) {
+                                throw Exception("Question '${question.text}' has fewer than 2 answers.")
+                            }
+                            val correctAnswersCount = question.answers.count { it.isCorrect }
+                            if (correctAnswersCount == 0) {
+                                throw Exception("Question '${question.text}' has no correct answers.")
+                            }
+                        }
+
+                        quiz = loadedQuiz
+                        currentQuestionIndex = 0
+                        selectedAnswer = null
+                        correctAnswersCount = 0
+                        wrongAnsweredQuestions = emptyList()
+                    } catch (e: Exception) {
+                        println("Failed to decode or validate JSON: ${e.message}")
+                        errorMessage = "${strings.invalidFormat} ${e.message}"
+                    }
+                }
+            }
+        }
         
         if (quiz == null) {
             Column(
@@ -145,44 +185,8 @@ fun App() {
                 Text(strings.selectQuizJson, style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
-                    coroutineScope.launch {
-                        errorMessage = null
-                        val jsonFileContent = loadQuizFile()
-                        if (jsonFileContent != null) {
-                            try {
-                                val loadedQuiz = Json.decodeFromString<Quiz>(jsonFileContent)
-                                
-                                if (loadedQuiz.questions.isEmpty()) {
-                                    throw Exception("Quiz contains no questions.")
-                                }
-                                loadedQuiz.questions.forEach { question ->
-                                    if (question.answers.size < 2) {
-                                        throw Exception("Question '${question.text}' has fewer than 2 answers.")
-                                    }
-                                    val correctAnswersCount = question.answers.count { it.isCorrect }
-                                    if (correctAnswersCount == 0) {
-                                        throw Exception("Question '${question.text}' has no correct answers.")
-                                    }
-                                }
-
-                                quiz = loadedQuiz
-                                currentQuestionIndex = 0
-                                selectedAnswer = null
-                                correctAnswersCount = 0
-                                wrongAnsweredQuestions = emptyList()
-                            } catch (e: Exception) {
-                                println("Failed to decode or validate JSON: ${e.message}")
-                                errorMessage = "${strings.invalidFormat} ${e.message}"
-                            }
-                        } else {
-                            // Fallback if file picker is not implemented for the target
-                            quiz = Json.decodeFromString<Quiz>(hardcodedQuizJson)
-                            currentQuestionIndex = 0
-                            selectedAnswer = null
-                            correctAnswersCount = 0
-                            wrongAnsweredQuestions = emptyList()
-                        }
-                    }
+                    errorMessage = null
+                    launcher.launch()
                 }) {
                     Text(strings.loadQuizJson)
                 }
