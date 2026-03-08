@@ -64,6 +64,7 @@ fun App() {
         var currentQuestionIndex by remember { mutableStateOf(0) }
         var selectedAnswer by remember { mutableStateOf<Answer?>(null) }
         var correctAnswersCount by remember { mutableStateOf(0) }
+        var errorMessage by remember { mutableStateOf<String?>(null) }
         val coroutineScope = rememberCoroutineScope()
         
         if (quiz == null) {
@@ -78,15 +79,32 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
                     coroutineScope.launch {
+                        errorMessage = null
                         val jsonFileContent = loadQuizFile()
                         if (jsonFileContent != null) {
                             try {
-                                quiz = Json.decodeFromString<Quiz>(jsonFileContent)
+                                val loadedQuiz = Json.decodeFromString<Quiz>(jsonFileContent)
+                                
+                                if (loadedQuiz.questions.isEmpty()) {
+                                    throw Exception("Quiz contains no questions.")
+                                }
+                                loadedQuiz.questions.forEach { question ->
+                                    if (question.answers.size < 2) {
+                                        throw Exception("Question '${question.text}' has fewer than 2 answers.")
+                                    }
+                                    val correctAnswersCount = question.answers.count { it.isCorrect }
+                                    if (correctAnswersCount == 0) {
+                                        throw Exception("Question '${question.text}' has no correct answers.")
+                                    }
+                                }
+
+                                quiz = loadedQuiz
                                 currentQuestionIndex = 0
                                 selectedAnswer = null
                                 correctAnswersCount = 0
                             } catch (e: Exception) {
-                                println("Failed to decode JSON: ${e.message}")
+                                println("Failed to decode or validate JSON: ${e.message}")
+                                errorMessage = "Invalid Quiz format: ${e.message}"
                             }
                         } else {
                             // Fallback if file picker is not implemented for the target
@@ -98,6 +116,15 @@ fun App() {
                     }
                 }) {
                     Text("Load Quiz JSON")
+                }
+                
+                if (errorMessage != null) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = errorMessage ?: "",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
             }
         } else {
