@@ -4,6 +4,8 @@
 
 Being a KMP project, it shares 100% of its UI and most of its business logic across Desktop, Web, Android, and iOS targets!
 
+🌍 **Live WebAssembly Demo:** [demensdeum.com/software/teflecher/](https://demensdeum.com/software/teflecher/)
+
 ## ✨ Features
 * **Cross-Platform User Interface** powered by declarative Jetpack Compose Multiplatform UI.
 * **Native File Pickers** using platform-native APIs to flexibly load your own local Quiz JSON files dynamically.

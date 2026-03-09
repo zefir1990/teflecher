@@ -51,7 +51,11 @@ data class AppStrings(
     val retryWrongAnswersButton: String,
     val questionCount: (Int, Int) -> String,
     val loadingRemoteQuizzes: String,
-    val orSelectRemoteQuiz: String
+    val orSelectRemoteQuiz: String,
+    val quizContainsNoQuestions: String,
+    val questionHasFewAnswers: (String) -> String,
+    val questionHasNoCorrectAnswers: (String) -> String,
+    val failedToDownloadQuiz: String
 )
 
 val enStrings = AppStrings(
@@ -68,7 +72,11 @@ val enStrings = AppStrings(
     retryWrongAnswersButton = "Retry Wrong Answers",
     questionCount = { current, total -> "Question $current of $total" },
     loadingRemoteQuizzes = "Loading remote quizzes...",
-    orSelectRemoteQuiz = "Or select a remote quiz:"
+    orSelectRemoteQuiz = "Or select a remote quiz:",
+    quizContainsNoQuestions = "Quiz contains no questions.",
+    questionHasFewAnswers = { questionText -> "Question '$questionText' has fewer than 2 answers." },
+    questionHasNoCorrectAnswers = { questionText -> "Question '$questionText' has no correct answers." },
+    failedToDownloadQuiz = "Failed to download quiz:"
 )
 
 val ruStrings = AppStrings(
@@ -85,7 +93,11 @@ val ruStrings = AppStrings(
     retryWrongAnswersButton = "Повторить ошибки",
     questionCount = { current, total -> "Вопрос $current из $total" },
     loadingRemoteQuizzes = "Загрузка списка викторин...",
-    orSelectRemoteQuiz = "Или выберите онлайн викторину:"
+    orSelectRemoteQuiz = "Или выберите онлайн викторину:",
+    quizContainsNoQuestions = "Викторина не содержит вопросов.",
+    questionHasFewAnswers = { questionText -> "Вопрос '$questionText' содержит менее 2 ответов." },
+    questionHasNoCorrectAnswers = { questionText -> "Вопрос '$questionText' не имеет правильных ответов." },
+    failedToDownloadQuiz = "Не удалось загрузить викторину:"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -187,15 +199,15 @@ fun App() {
                         val loadedQuiz = Json.decodeFromString<Quiz>(jsonFileContent)
 
                         if (loadedQuiz.questions.isEmpty()) {
-                            throw Exception("Quiz contains no questions.")
+                            throw Exception(strings.quizContainsNoQuestions)
                         }
                         loadedQuiz.questions.forEach { question ->
                             if (question.answers.size < 2) {
-                                throw Exception("Question '${question.text}' has fewer than 2 answers.")
+                                throw Exception(strings.questionHasFewAnswers(question.text))
                             }
                             val correctAnswersCount = question.answers.count { it.isCorrect }
                             if (correctAnswersCount == 0) {
-                                throw Exception("Question '${question.text}' has no correct answers.")
+                                throw Exception(strings.questionHasNoCorrectAnswers(question.text))
                             }
                         }
 
@@ -272,7 +284,7 @@ fun App() {
                                         val loadedQuiz: Quiz = client.get(quizUrl).body()
                                         
                                         if (loadedQuiz.questions.isEmpty()) {
-                                            throw Exception("Quiz contains no questions.")
+                                            throw Exception(strings.quizContainsNoQuestions)
                                         }
                                         
                                         quiz = loadedQuiz
@@ -282,7 +294,7 @@ fun App() {
                                         wrongAnsweredQuestions = emptyList()
                                     } catch (e: Exception) {
                                         println("Failed to download remote quiz: ${e.message}")
-                                        errorMessage = "Failed to download quiz: ${e.message}"
+                                        errorMessage = "${strings.failedToDownloadQuiz} ${e.message}"
                                     } finally {
                                         isLoadingRemote = false
                                     }
