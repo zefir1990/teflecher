@@ -176,6 +176,8 @@ fun App() {
         val strings = if (selectedLanguage == Language.EN) enStrings else ruStrings
         val coroutineScope = rememberCoroutineScope()
 
+        val shuffledQuestions = remember(quiz) { quiz?.questions?.shuffled() ?: emptyList() }
+
         LaunchedEffect(Unit) {
             isLoadingRemote = true
             try {
@@ -309,7 +311,7 @@ fun App() {
             }
         } else {
             val validQuiz = quiz!!
-            val currentQuestion = validQuiz.questions.getOrNull(currentQuestionIndex)
+            val currentQuestion = shuffledQuestions.getOrNull(currentQuestionIndex)
     
             Column(
                 modifier = Modifier
@@ -323,13 +325,13 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 if (currentQuestion != null) {
-                    val progress = (currentQuestionIndex + 1).toFloat() / validQuiz.questions.size
+                    val progress = (currentQuestionIndex + 1).toFloat() / shuffledQuestions.size
                     LinearProgressIndicator(
                         progress = progress,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                     )
                     Text(
-                        text = strings.questionCount(currentQuestionIndex + 1, validQuiz.questions.size),
+                        text = strings.questionCount(currentQuestionIndex + 1, shuffledQuestions.size),
                         style = MaterialTheme.typography.bodySmall
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -383,7 +385,7 @@ fun App() {
                 } else {
                     Text(strings.quizCompleted, style = MaterialTheme.typography.headlineMedium)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(strings.youScored(correctAnswersCount, validQuiz.questions.size), style = MaterialTheme.typography.bodyLarge)
+                    Text(strings.youScored(correctAnswersCount, shuffledQuestions.size), style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = {
                         quiz = null
