@@ -25,6 +25,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
+import androidx.compose.ui.platform.LocalUriHandler
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerType
 import io.ktor.client.*
@@ -58,7 +59,8 @@ data class AppStrings(
     val questionHasNoCorrectAnswers: (String) -> String,
     val failedToDownloadQuiz: String,
     val rememberQuestion: String,
-    val reviewRememberedQuestions: String
+    val reviewRememberedQuestions: String,
+    val googleQuestion: String
 )
 
 val enStrings = AppStrings(
@@ -81,7 +83,8 @@ val enStrings = AppStrings(
     questionHasNoCorrectAnswers = { questionText -> "Question '$questionText' has no correct answers." },
     failedToDownloadQuiz = "Failed to download quiz:",
     rememberQuestion = "Remember question",
-    reviewRememberedQuestions = "Review Remembered Questions"
+    reviewRememberedQuestions = "Review Remembered Questions",
+    googleQuestion = "Google question"
 )
 
 val ruStrings = AppStrings(
@@ -104,7 +107,8 @@ val ruStrings = AppStrings(
     questionHasNoCorrectAnswers = { questionText -> "Вопрос '$questionText' не имеет правильных ответов." },
     failedToDownloadQuiz = "Не удалось загрузить викторину:",
     rememberQuestion = "Запомнить вопрос",
-    reviewRememberedQuestions = "Посмотреть запомненные вопросы"
+    reviewRememberedQuestions = "Посмотреть запомненные вопросы",
+    googleQuestion = "Погуглить вопрос"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -159,6 +163,8 @@ fun App() {
             }
         }
     }
+
+    val uriHandler = LocalUriHandler.current
 
     MaterialTheme {
         var quiz by remember { mutableStateOf<Quiz?>(null) }
@@ -363,6 +369,24 @@ fun App() {
                             }
                         )
                         Text(text = strings.rememberQuestion, style = MaterialTheme.typography.bodySmall)
+
+                        if (rememberedQuestions.contains(currentQuestion)) {
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Button(
+                                onClick = {
+                                    val query = currentQuestion.text.replace(" ", "+")
+                                    uriHandler.openUri("https://www.google.com/search?q=$query")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                                ),
+                                modifier = Modifier.height(32.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                            ) {
+                                Text(text = strings.googleQuestion, style = MaterialTheme.typography.labelSmall)
+                            }
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
