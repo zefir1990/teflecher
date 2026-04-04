@@ -13,6 +13,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +56,9 @@ data class AppStrings(
     val quizContainsNoQuestions: String,
     val questionHasFewAnswers: (String) -> String,
     val questionHasNoCorrectAnswers: (String) -> String,
-    val failedToDownloadQuiz: String
+    val failedToDownloadQuiz: String,
+    val rememberQuestion: String,
+    val reviewRememberedQuestions: String
 )
 
 val enStrings = AppStrings(
@@ -76,7 +79,9 @@ val enStrings = AppStrings(
     quizContainsNoQuestions = "Quiz contains no questions.",
     questionHasFewAnswers = { questionText -> "Question '$questionText' has fewer than 2 answers." },
     questionHasNoCorrectAnswers = { questionText -> "Question '$questionText' has no correct answers." },
-    failedToDownloadQuiz = "Failed to download quiz:"
+    failedToDownloadQuiz = "Failed to download quiz:",
+    rememberQuestion = "Remember question",
+    reviewRememberedQuestions = "Review Remembered Questions"
 )
 
 val ruStrings = AppStrings(
@@ -97,7 +102,9 @@ val ruStrings = AppStrings(
     quizContainsNoQuestions = "Викторина не содержит вопросов.",
     questionHasFewAnswers = { questionText -> "Вопрос '$questionText' содержит менее 2 ответов." },
     questionHasNoCorrectAnswers = { questionText -> "Вопрос '$questionText' не имеет правильных ответов." },
-    failedToDownloadQuiz = "Не удалось загрузить викторину:"
+    failedToDownloadQuiz = "Не удалось загрузить викторину:",
+    rememberQuestion = "Запомнить вопрос",
+    reviewRememberedQuestions = "Посмотреть запомненные вопросы"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -160,6 +167,7 @@ fun App() {
         var correctAnswersCount by remember { mutableStateOf(0) }
         var errorMessage by remember { mutableStateOf<String?>(null) }
         var wrongAnsweredQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
+        var rememberedQuestions by remember { mutableStateOf<List<Question>>(emptyList()) }
         val settings = remember { Settings() }
         var selectedLanguage by remember { 
             val savedLang = settings.getString("selected_language", Language.EN.name)
@@ -218,6 +226,7 @@ fun App() {
                         selectedAnswer = null
                         correctAnswersCount = 0
                         wrongAnsweredQuestions = emptyList()
+                        rememberedQuestions = emptyList()
                     } catch (e: Exception) {
                         println("Failed to decode or validate JSON: ${e.message}")
                         errorMessage = "${strings.invalidFormat} ${e.message}"
@@ -294,6 +303,7 @@ fun App() {
                                         selectedAnswer = null
                                         correctAnswersCount = 0
                                         wrongAnsweredQuestions = emptyList()
+                                        rememberedQuestions = emptyList()
                                     } catch (e: Exception) {
                                         println("Failed to download remote quiz: ${e.message}")
                                         errorMessage = "${strings.failedToDownloadQuiz} ${e.message}"
@@ -339,6 +349,22 @@ fun App() {
                     val randomizedAnswers = remember(currentQuestion) { currentQuestion.answers.shuffled() }
 
                     Text(text = currentQuestion.text, style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = rememberedQuestions.contains(currentQuestion),
+                            onCheckedChange = { checked ->
+                                if (checked) {
+                                    rememberedQuestions = rememberedQuestions + currentQuestion
+                                } else {
+                                    rememberedQuestions = rememberedQuestions - currentQuestion
+                                }
+                            }
+                        )
+                        Text(text = strings.rememberQuestion, style = MaterialTheme.typography.bodySmall)
+                    }
+
                     Spacer(modifier = Modifier.height(16.dp))
                     
                     randomizedAnswers.forEach { answer ->
@@ -407,6 +433,23 @@ fun App() {
                             wrongAnsweredQuestions = emptyList()
                         }) {
                             Text(strings.retryWrongAnswersButton)
+                        }
+                    }
+
+                    if (rememberedQuestions.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = {
+                            val reviewQuiz = Quiz(
+                                id = validQuiz.id + "-remembered",
+                                title = validQuiz.title + " (Remembered Questions)",
+                                questions = rememberedQuestions
+                            )
+                            quiz = reviewQuiz
+                            currentQuestionIndex = 0
+                            correctAnswersCount = 0
+                            selectedAnswer = null
+                        }) {
+                            Text(strings.reviewRememberedQuestions)
                         }
                     }
                 }
