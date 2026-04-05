@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.platform.LocalUriHandler
@@ -34,6 +35,8 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import com.russhwolf.settings.Settings
+import kotlin.time.TimeSource
+
 
 enum class Language {
     EN, RU
@@ -60,7 +63,8 @@ data class AppStrings(
     val failedToDownloadQuiz: String,
     val rememberQuestion: String,
     val reviewRememberedQuestions: String,
-    val googleQuestion: String
+    val googleQuestion: String,
+    val fiveSecondsMode: String
 )
 
 val enStrings = AppStrings(
@@ -84,7 +88,8 @@ val enStrings = AppStrings(
     failedToDownloadQuiz = "Failed to download quiz:",
     rememberQuestion = "Remember question",
     reviewRememberedQuestions = "Review Remembered Questions",
-    googleQuestion = "Google question"
+    googleQuestion = "Google question",
+    fiveSecondsMode = "5 seconds per question"
 )
 
 val ruStrings = AppStrings(
@@ -108,7 +113,8 @@ val ruStrings = AppStrings(
     failedToDownloadQuiz = "Не удалось загрузить викторину:",
     rememberQuestion = "Запомнить вопрос",
     reviewRememberedQuestions = "Посмотреть запомненные вопросы",
-    googleQuestion = "Погуглить вопрос"
+    googleQuestion = "Погуглить вопрос",
+    fiveSecondsMode = "5 секунд на вопрос"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -184,6 +190,16 @@ fun App() {
             settings.putString("selected_language", selectedLanguage.name)
         }
 
+        var isFiveSecondsModeEnabled by remember {
+            mutableStateOf(settings.getBoolean("five_seconds_mode", false))
+        }
+
+        LaunchedEffect(isFiveSecondsModeEnabled) {
+            settings.putBoolean("five_seconds_mode", isFiveSecondsModeEnabled)
+        }
+
+        var timerProgress by remember { mutableStateOf(1f) }
+
         var remoteQuizList by remember { mutableStateOf<List<QuizEntry>>(emptyList()) }
         var isLoadingRemote by remember { mutableStateOf(false) }
 
@@ -201,6 +217,28 @@ fun App() {
                 println("Failed to fetch remote quiz list: ${e.message}")
             } finally {
                 isLoadingRemote = false
+            }
+        }
+
+        LaunchedEffect(currentQuestionIndex, isFiveSecondsModeEnabled, quiz, selectedAnswer != null) {
+            if (isFiveSecondsModeEnabled && quiz != null && currentQuestionIndex < shuffledQuestions.size && selectedAnswer == null) {
+                val duration = 5000L
+                val startTime = TimeSource.Monotonic.markNow()
+                while (startTime.elapsedNow().inWholeMilliseconds < duration) {
+                    val elapsed = startTime.elapsedNow().inWholeMilliseconds
+                    timerProgress = 1f - elapsed.toFloat() / duration
+                    delay(50)
+                }
+                timerProgress = 0f
+                // Timeout logic
+
+                shuffledQuestions.getOrNull(currentQuestionIndex)?.let {
+                    wrongAnsweredQuestions = wrongAnsweredQuestions + it
+                }
+                currentQuestionIndex++
+                selectedAnswer = null
+            } else {
+                timerProgress = 1f
             }
         }
 
@@ -265,6 +303,14 @@ fun App() {
                     }
                 }
                 Spacer(modifier = Modifier.height(32.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = isFiveSecondsModeEnabled,
+                        onCheckedChange = { isFiveSecondsModeEnabled = it }
+                    )
+                    Text(strings.fiveSecondsMode)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(strings.selectQuizJson, style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
@@ -350,6 +396,13 @@ fun App() {
                         text = strings.questionCount(currentQuestionIndex + 1, shuffledQuestions.size),
                         style = MaterialTheme.typography.bodySmall
                     )
+                    if (isFiveSecondsModeEnabled) {
+                        LinearProgressIndicator(
+                            progress = timerProgress,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     
                     val randomizedAnswers = remember(currentQuestion) { currentQuestion.answers.shuffled() }
