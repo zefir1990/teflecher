@@ -64,7 +64,7 @@ data class AppStrings(
     val rememberQuestion: String,
     val reviewRememberedQuestions: String,
     val googleQuestion: String,
-    val fiveSecondsMode: String
+    val twentySecondsMode: String
 )
 
 val enStrings = AppStrings(
@@ -89,7 +89,7 @@ val enStrings = AppStrings(
     rememberQuestion = "Remember question",
     reviewRememberedQuestions = "Review Remembered Questions",
     googleQuestion = "Google question",
-    fiveSecondsMode = "5 seconds per question"
+    twentySecondsMode = "20 seconds per question"
 )
 
 val ruStrings = AppStrings(
@@ -114,7 +114,7 @@ val ruStrings = AppStrings(
     rememberQuestion = "Запомнить вопрос",
     reviewRememberedQuestions = "Посмотреть запомненные вопросы",
     googleQuestion = "Погуглить вопрос",
-    fiveSecondsMode = "20 секунд на вопрос"
+    twentySecondsMode = "20 секунд на вопрос"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -190,12 +190,12 @@ fun App() {
             settings.putString("selected_language", selectedLanguage.name)
         }
 
-        var isFiveSecondsModeEnabled by remember {
-            mutableStateOf(settings.getBoolean("five_seconds_mode", false))
+        var isTwentySecondsModeEnabled by remember {
+            mutableStateOf(settings.getBoolean("twenty_seconds_mode", false))
         }
 
-        LaunchedEffect(isFiveSecondsModeEnabled) {
-            settings.putBoolean("five_seconds_mode", isFiveSecondsModeEnabled)
+        LaunchedEffect(isTwentySecondsModeEnabled) {
+            settings.putBoolean("twenty_seconds_mode", isTwentySecondsModeEnabled)
         }
 
         var timerProgress by remember { mutableStateOf(1f) }
@@ -220,8 +220,8 @@ fun App() {
             }
         }
 
-        LaunchedEffect(currentQuestionIndex, isFiveSecondsModeEnabled, quiz, selectedAnswer != null) {
-            if (isFiveSecondsModeEnabled && quiz != null && currentQuestionIndex < shuffledQuestions.size && selectedAnswer == null) {
+        LaunchedEffect(currentQuestionIndex, isTwentySecondsModeEnabled, quiz, selectedAnswer != null) {
+            if (isTwentySecondsModeEnabled && quiz != null && currentQuestionIndex < shuffledQuestions.size && selectedAnswer == null) {
                 val duration = 20000L
                 val startTime = TimeSource.Monotonic.markNow()
                 while (startTime.elapsedNow().inWholeMilliseconds < duration) {
@@ -305,10 +305,10 @@ fun App() {
                 Spacer(modifier = Modifier.height(32.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
-                        checked = isFiveSecondsModeEnabled,
-                        onCheckedChange = { isFiveSecondsModeEnabled = it }
+                        checked = isTwentySecondsModeEnabled,
+                        onCheckedChange = { isTwentySecondsModeEnabled = it }
                     )
-                    Text(strings.fiveSecondsMode)
+                    Text(strings.twentySecondsMode)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(strings.selectQuizJson, style = MaterialTheme.typography.headlineMedium)
@@ -396,7 +396,7 @@ fun App() {
                         text = strings.questionCount(currentQuestionIndex + 1, shuffledQuestions.size),
                         style = MaterialTheme.typography.bodySmall
                     )
-                    if (isFiveSecondsModeEnabled) {
+                    if (isTwentySecondsModeEnabled) {
                         LinearProgressIndicator(
                             progress = timerProgress,
                             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
