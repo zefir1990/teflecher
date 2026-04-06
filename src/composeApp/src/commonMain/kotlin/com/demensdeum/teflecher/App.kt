@@ -114,7 +114,7 @@ val ruStrings = AppStrings(
     rememberQuestion = "Запомнить вопрос",
     reviewRememberedQuestions = "Посмотреть запомненные вопросы",
     googleQuestion = "Погуглить вопрос",
-    fiveSecondsMode = "5 секунд на вопрос"
+    fiveSecondsMode = "20 секунд на вопрос"
 )
 @Serializable
 data class Answer(val id: String, val text: String, val isCorrect: Boolean)
@@ -222,7 +222,7 @@ fun App() {
 
         LaunchedEffect(currentQuestionIndex, isFiveSecondsModeEnabled, quiz, selectedAnswer != null) {
             if (isFiveSecondsModeEnabled && quiz != null && currentQuestionIndex < shuffledQuestions.size && selectedAnswer == null) {
-                val duration = 5000L
+                val duration = 20000L
                 val startTime = TimeSource.Monotonic.markNow()
                 while (startTime.elapsedNow().inWholeMilliseconds < duration) {
                     val elapsed = startTime.elapsedNow().inWholeMilliseconds
