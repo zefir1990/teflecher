@@ -71,6 +71,8 @@ Teflecher takes standard `.json` quiz structures. The format schema is structure
 }
 ```
 
+Quiz file names also use a language suffix in the form `-<language code>`. For example, `-en` means the quiz uses English localization.
+
 ## 🛠️ Tech Stack Layering
 * **UI**: Compose Multiplatform (`androidx.compose`)
 * **Network**: Ktor Client (`io.ktor`)
